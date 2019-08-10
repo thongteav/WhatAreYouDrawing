@@ -1,0 +1,14 @@
+.button {
+  background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
+  border-radius: 3px !important;
+  border: 0;
+  height: 48px !important;
+  padding: 0 30px !important;
+  color: white !important;
+  font-family: 'Montserrat', sans-serif !important;
+  text-transform: capitalize !important;
+}
+
+.button:hover {
+  box-shadow: 0 3px 5px 2px rgba(33, 203, 243, .3);
+}
