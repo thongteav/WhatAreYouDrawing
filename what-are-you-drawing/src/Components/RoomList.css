@@ -1,0 +1,84 @@
+.rooms-header {
+  background: #333333;
+  border-radius: 5px 5px 0 0;
+  color: white;
+  padding: .5em 0.3em 0;
+  font-size: 1.5em;
+  text-align: left;
+}
+
+.room-btn {
+  background: #a2edff;
+  color: white;
+  box-shadow: #8be5fc 0 -2px 0;
+  border: none;
+  align-items: stretch;
+  line-height: 1;
+  font-size: 2em;
+  font-weight: bold;
+  padding: 0.3em;
+  flex-grow: 1;
+}
+
+.stretch {
+  align-items: stretch;
+}
+
+.room-btn:hover {
+  background: #FFCAF2;
+  box-shadow: #F186BF 0 -2px 0;
+}
+
+.room-btn-desc {
+  flex-grow: 1;
+  overflow: hidden;
+  text-align: left;
+  font-size: 1em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.room-btn-players {
+  font-size: .5em;
+  overflow: hidden;
+  align-self: center;
+}
+
+.rooms {
+  padding-top: 1em;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.button {
+  background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
+  border-radius: 5px !important;
+  border: 0;
+  height: 48px !important;
+  padding: 0 2em 1.7em !important;
+  color: white !important;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 2em !important;
+  font-weight: bold !important;
+  text-transform: capitalize !important;
+}
+
+.button:hover {
+  box-shadow: 0 3px 5px 2px rgba(33, 203, 243, .4);
+}

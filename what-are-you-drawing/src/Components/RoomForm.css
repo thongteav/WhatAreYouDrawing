@@ -1,0 +1,80 @@
+.form-header {
+  background: #333333;
+  color: white;
+  font-size: 1.5em;
+  padding: .5em .3em .5em;
+  border-radius: 5px 5px 0 0;
+}
+
+.closeIcon {
+  margin-left: auto;
+  overflow: hidden;
+}
+
+.form-row {
+  flex-grow: 1;
+  font-size: 1em;
+  padding: 0.5em 0.5em;
+}
+
+.form-label {
+  margin-right:auto;
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: .5em;
+  margin-bottom: .3em;
+}
+
+.form-input {
+  font-size: 1em;
+  padding: 0.5em 0.5em;
+}
+
+.MuiInputBase-root {
+  text-align: left;
+  padding: 0 0.5em;
+}
+
+.form-submit-btn {
+  background: linear-gradient(45deg, #2196F3 30%, #21CBF3 90%);
+  border: 0;
+  border-radius: 5px;
+  font-size: 1.5em;
+  color: white;
+  font-weight: bold;
+  padding: 0.3em;
+  width: 90%;
+  margin: auto;
+}
+
+.form-window {
+  background: rgba(0,0,0,.8);
+  bottom: 0;
+  left: 0;
+  padding: 2em;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity .25s ease;
+}
+
+.form-modal {  
+  background: white;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 50px 10px rgba(0,0,0,.3);
+  box-shadow: 0 0 50px 10px rgba(0,0,0,.3);
+  color: black;
+  font-size: 20px;
+  margin: auto;
+  max-width: 380px;
+  width: 100%;
+  transform: translateY(20%);
+}
+
+.MuiSlider-root {
+  padding: 11px 0.3em; 
+}
+
+.room-form {
+  padding: 0 0.5em 1em;
+}
