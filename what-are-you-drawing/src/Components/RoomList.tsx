@@ -1,10 +1,8 @@
 import * as React from 'react'
 import Button from "@material-ui/core/Button";
 import RoomForm from './RoomForm'
-import Room from './Room'
 import './RoomList.css';
-import App from '../App';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 interface IState {
   roomList: any
@@ -72,7 +70,8 @@ class RoomList extends React.Component<{}, IState>{
   public render() {
     const visible = this.state.formVisible;
     return (
-      <div className={visible ? "rooms flex-column overflow-hidden" : "rooms flex-column"}>
+      <div className={visible ? "main flex-center-all flex-column overflow-hidden" : "main flex-center-all flex-column"}>
+        <h1>What Are You Drawing?</h1>
         {
           visible && <RoomForm 
             isFormOpen={this.state.formVisible} 
@@ -86,7 +85,7 @@ class RoomList extends React.Component<{}, IState>{
           </div>
           {// each room
             this.state.roomList.map((room: any) => (
-              <Link className="flex stretch" to={`/${room.roomId}`}>
+              <NavLink className="flex stretch link" to={`/room/${room.roomId}`}>
                 <button className="room-btn flex" key={room.roomId}>
                   <div className="room-btn-desc">
                     {room.roomName}
@@ -95,7 +94,7 @@ class RoomList extends React.Component<{}, IState>{
                     {room.totalPlayers}/{room.maxPlayers}
                   </div>
                 </button>
-              </Link>              
+              </NavLink>              
             ))
           }
         </div>

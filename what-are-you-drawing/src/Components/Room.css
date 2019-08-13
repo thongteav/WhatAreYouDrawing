@@ -1,0 +1,84 @@
+.board {
+  max-height: none;
+  flex: auto;
+  justify-content: center;
+  width: 100%;
+}
+
+.canvas {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 4;
+}
+
+.canvas-header {
+  background-color: #333333;
+  color: white;
+  width: 100%;
+  text-align: center;
+  padding: .3em;
+}
+
+.canvas-controls {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: .3em;
+  opacity: 1;
+  position: absolute;
+  z-index: 99;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+
+.canvas-overlay {
+  border-radius: 4px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  opacity: 1;
+  z-index: 99;
+  touch-action: none;
+  transition: opacity .2s;
+}
+
+.canvas-timer {
+  background-color: #a2edff;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 2em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: opacity .2s;
+  width: 2em;
+  z-index: 995;
+}
+
+.canvas-controls-group-palette {
+  flex-wrap: wrap;
+  width: 15em;
+}
+
+.canvas-controls-group-above {
+  bottom: 5em;
+}
+
+.controls-group-left {
+  left: 0;
+}
+
+.canvas-controls-group {
+  background: rgba(245, 245, 245, 0.9);
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  padding: .25em;
+  position: absolute;
+  transition: opacity .4s;
+  opacity: 1;
+}

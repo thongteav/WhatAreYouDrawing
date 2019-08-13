@@ -1,18 +1,20 @@
 import React from 'react';
 import './App.css';
 import RoomList from './Components/RoomList';
-import { BrowserRouter as Router } from 'react-router-dom';
-
+import { BrowserRouter as Switch, Route } from 'react-router-dom';
+import Room from './Components/Room';
+import Header from './Components/Header';
 
 class App extends React.Component<{}>{
   public render() {
     return (
-      <Router>
-        <div id='app' className='app'>
-          <h1>What Are You Drawing?</h1>
-          <RoomList />
-        </div>
-      </Router>
+      <div id='app' className='app'>
+        <Switch>
+          <Header />
+          <Route exact path="/" component={RoomList} />
+          <Route exact path="/room/:id" component={Room} />
+        </Switch>        
+      </div>
     )
   }
 }
