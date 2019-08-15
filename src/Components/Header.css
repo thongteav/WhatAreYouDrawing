@@ -1,0 +1,8 @@
+.header {
+  background-color: #333333;
+  color: white;
+  flex: none;
+  line-height: 1.15;
+  flex-grow: 1;
+  padding: 1em;
+}
