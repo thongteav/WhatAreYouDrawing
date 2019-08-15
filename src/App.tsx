@@ -6,12 +6,20 @@ import Room from './Components/Room';
 import Header from './Components/Header';
 
 class App extends React.Component<{}>{
+  state = {
+    playerName: null
+  }
+
+  setPlayer = (name: any) => {
+    this.setState({playerName: name})
+  }
+
   public render() {
     return (
       <div id='app' className='app'>
         <Switch>
-          <Header />
-          <Route exact path="/" component={RoomList} />
+          <Header playerName={this.state.playerName} />
+          <Route exact path="/" render={() => (<RoomList addName={this.setPlayer} />)} />
           <Route exact path="/room/:id" component={Room} />
         </Switch>        
       </div>

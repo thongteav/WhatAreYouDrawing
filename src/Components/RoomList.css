@@ -69,6 +69,8 @@
   font-size: 2em !important;
   font-weight: bold !important;
   text-transform: capitalize !important;
+  max-width: 500px;
+  width: 100%;
 }
 
 .button:hover {
