@@ -6,3 +6,7 @@
   flex-grow: 1;
   padding: 0.5em 1em;
 }
+
+.header-toggle {
+  flex-grow: 1
+}

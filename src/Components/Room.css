@@ -29,7 +29,8 @@
   color: white;
   width: 100%;
   text-align: center;
-  padding: 1.5em;
+  font-size: 2em;
+  padding: .12em;
 }
 
 .canvas-controls {
@@ -167,6 +168,15 @@
   overflow-y: auto;
 }
 
+.users-user {
+  color: black;
+  align-items: baseline;
+  border-right: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  letter-spacing: 0.03em;
+  padding: .6em .5em;
+  transition: border-right .3s,border-top .3s,color .3s,background-color .3s;
+}
 
 .chat {
   background: white;

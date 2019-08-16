@@ -12,6 +12,8 @@ interface IState {
   showPalette: boolean
   showSizeMenu: boolean
   canvasRef: any
+  timer: number
+  answer: string
 }
 
 export default class Canvas extends React.Component<{}, IState> {
@@ -20,20 +22,65 @@ export default class Canvas extends React.Component<{}, IState> {
 
     this.state = {
       color: "#000",
-      width: 500,
-      height: 500,
+      width: 800,
+      height: 800,
       brushRadius: 10,
       lazyRadius: 0,
       showPalette: false,
       showSizeMenu: false,
-      canvasRef: null
+      canvasRef: null,
+      timer: 99,
+      answer: ""
     }
 
+    this.getNewWord = this.getNewWord.bind(this);
     this.toggleSizeMenu = this.toggleSizeMenu.bind(this);
     this.togglePalette = this.togglePalette.bind(this);
     this.setCanvasRef = this.setCanvasRef.bind(this);
     this.clearCanvas = this.clearCanvas.bind(this);
     this.undoLastDraw = this.undoLastDraw.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+    this.countDown = this.countDown.bind(this);
+  }
+
+  public getRandomWord() {
+    const words = [
+      "joint", "shirt", "stairs", "rocket", "basketball", "sea turtle", "book", "train", "rain",
+      "leaf", "key", "angel", "camera", "garden", "watch", "wave", "boat", "deck", "seaweed", "phone",
+      "princess", "dog", "pig", "kiwi", "pants"
+    ]
+
+    const index = Math.floor(Math.random() * (words.length - 1));
+    return words[index];
+  }
+
+  public getNewWord() {
+    this.setState({
+      answer: this.getRandomWord()
+    })
+  }
+
+  public componentDidMount() {
+    this.startTimer();
+    this.getNewWord();
+  }
+
+  public startTimer() {
+    setInterval(this.countDown, 1000);
+  }
+
+  public countDown() {
+    this.setState((prevState: any) => ({
+      timer: prevState.timer - 1
+    }))
+
+    if (this.state.timer <= 0) {
+      this.setState((prevState: any) => ({
+        timer: 99
+      }))
+
+      this.getNewWord();
+    }
   }
 
   public toggleSizeMenu(event: any) {
@@ -123,7 +170,7 @@ export default class Canvas extends React.Component<{}, IState> {
     const sizes = [2, 5, 8, 10, 12, 15];
     return (
       <div className="canvas flex-column">
-        <div className="canvas-header no-select"></div>
+        <div className="canvas-header no-select">You're drawing {this.state.answer}</div>
         <div style={{cursor: 'auto'}} className="canvas-cursor" >
           <CanvasDraw className="canvas-cursor no-select display-none" 
             ref={this.setCanvasRef}
@@ -135,7 +182,7 @@ export default class Canvas extends React.Component<{}, IState> {
         </div>
         <div className="canvas-controls flex-center-all no-select">
           <div className="canvas-overlay flex-center-all">
-            <div className="canvas-timer flex-center-all">99</div>
+            <div className="canvas-timer flex-center-all">{this.state.timer}</div>
             {// colour palette
               this.state.showPalette && 
               <div className="canvas-controls-group controls-group-left controls-group-above canvas-palette flex">

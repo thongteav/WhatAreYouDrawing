@@ -7,76 +7,44 @@ import { NavLink } from 'react-router-dom';
 import logo from './../drawguesslogoo.png';
 
 interface IProp {
-  addName: any
+  addPlayer: any
 }
 
 interface IState {
-  roomList: any
+  publicRooms: any
+  privateRooms: any
   formVisible: boolean
   player: any
   playerName: string
 }
 
 class RoomList extends React.Component<IProp, IState>{
+  public _isMounted = false;
+
   public constructor(props:any) {
     super(props);
     this.state = {
-      roomList: [
-        {
-          roomId: 1,
-          roomName: "Hello World",
-          maxPlayers: 10,
-          type: "public",
-          totalPlayers: 5,
-          ownerId: 2,
-          players: [],
-          pin: 0
-        },
-        {
-          roomId: 2,
-          roomName: "Have Fun",
-          maxPlayers: 15,
-          type: "public",
-          totalPlayers: 7,
-          ownerId: 1,
-          players: [],
-          pin: 0
-        },
-        {
-          roomId: 3,
-          roomName: "Room 3",
-          maxPlayers: 20,
-          type: "private",
-          totalPlayers: 20,
-          ownerId: 5,
-          players: [],
-          pin: 1234
-        },
-      ],
+      publicRooms: [],
+      privateRooms: [],
       formVisible: false,
       player: null,
       playerName: ""
     }
 
     this.submitName = this.submitName.bind(this);
+    this.updateRooms = this.updateRooms.bind(this);
   }
 
   public createRoom = () => {
     this.setState({
       formVisible: true
     })
-
-
   }
 
   public closeForm = () => {
     this.setState({
       formVisible: false
     })
-  }
-
-  public addRoom = (room: any) => {
-    this.state.roomList.push(room);
   }
 
   public handleChange(event: any) {
@@ -90,80 +58,133 @@ class RoomList extends React.Component<IProp, IState>{
 
   public submitName(event: any) {
     event.preventDefault();
-    const player = {
-      playerName: this.state.playerName
-    }
-    this.setState({
-      player: player
+    //https://drawguessapi.azurewebsites.net
+    //https://localhost:44314
+    
+    fetch("https://drawguessapi.azurewebsites.net/api/Players", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        playerName: this.state.playerName
+      })
+    }).then((result: any) => {
+      return result.json();
+    }).then((result: any) => {
+      this.setState({
+        player: result
+      })
+
+      localStorage.setItem('playerId', this.state.player.playerId);
+      localStorage.setItem('playerName', this.state.player.playerName);
+      
+      this.props.addPlayer(this.state.player);
+    }).catch((error) => {
+      alert("error: " + error);
     })
+  }
 
-    // fetch("https://drawguessapi.azurewebsites.net/api/Players", {
-    //   method: "post",
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'mode': 'no-cors'
-    //   },
-    //   body: JSON.stringify({
-    //     playerName: this.state.playerName
-    //   })
-    // }).then((result: any) => {
-    //   alert(result);
-    //   console.log(result);
-    //   return result.json();
-    // }).then((result: any) => {
-    //   // this.setState({
-    //   //   player: result
-    //   // })
+  public updateRooms() {
+    fetch("https://drawguessapi.azurewebsites.net/api/Rooms", {
+      method: "get"
+    }).then((result: any) => {
+      return result.json();
+    }).then((result: any) => {
+     
+      if (this._isMounted) {
+        console.log("rooms fetched");
+        console.log(result);
+        const publicRooms = result.filter((r: any) => r.roomType === 'public');
+        const privateRooms = result.filter((r: any) => r.roomType === 'private');
+        
+        this.setState({
+          publicRooms: publicRooms,
+          privateRooms: privateRooms
+        })
+      }      
+    })
+  }
 
-    //   // this.props.addName(result.playerName);
+  public componentDidMount() {
+    this._isMounted = true;
+    this.updateRooms();
+  }
 
-    //   console.log(result);
-    //   if (this.state.player === null) {
-    //     console.log("player is still null");
-    //   }
-    // })
-    // .catch((error) => {
-    //   alert("error: " + error);
-    // })
+  public componentWillUnmount() {
+    this._isMounted = false;
   }
 
   public render() {
     const visible = this.state.formVisible;
     const isPlayerNull = (this.state.player === null);
-    if (!isPlayerNull) {
+    const playerName = localStorage.getItem('playerName');
+    const anyPublicRoom = (this.state.publicRooms.length > 0);
+    const anyPrivateRoom = (this.state.privateRooms.length > 0);
+    if (playerName || !isPlayerNull) {
       return (
         <div className={visible ? "main flex-center-all flex-column overflow-hidden" : "main flex-center-all flex-column"}>
           <img src={logo} alt="Draw & Guess" />
           {
             visible && <RoomForm 
               isFormOpen={this.state.formVisible} 
-              closeForm={this.closeForm} 
-              createRoom={this.addRoom}/>
+              closeForm={this.closeForm} />
           }
           <Button className="button" onClick={this.createRoom}>Create Room</Button>
-          <div className="rooms public flex-column">
-            <div className="rooms-header">
-              <p>PUBLIC ROOMS</p>
+          {
+            anyPublicRoom && 
+            <div className="rooms public flex-column">
+              <div className="rooms-header">
+                <p>PUBLIC ROOMS</p>
+              </div>
+              <div className="room-btn-desc room-list-desc flex">
+                <span className="room-header-desc flex">ID</span> 
+                <span className="room-header-desc flex">Name</span> 
+              </div>
+              {// each public room
+                this.state.publicRooms.map((room: any) => (
+                  <NavLink className="flex stretch link" key={room.roomId} to={`/room/${room.roomId}`}>
+                    <button className="room-btn flex" key={room.roomId}>
+                      <div className="room-btn-desc">
+                        <span className="room-btn-id">{room.roomId}</span>{room.roomName}
+                      </div>
+                      <div className="room-btn-players">
+                        0/{room.maxPlayers}
+                      </div>
+                    </button>
+                  </NavLink>              
+                ))
+              }
             </div>
-            {// each room
-              this.state.roomList.map((room: any) => (
-                <NavLink className="flex stretch link" key={room.roomId} to={`/room/${room.roomId}`}>
-                  <button className="room-btn flex" key={room.roomId}>
-                    <div className="room-btn-desc">
-                      {room.roomName}
-                    </div>
-                    <div className="room-btn-players">
-                      {room.totalPlayers}/{room.maxPlayers}
-                    </div>
-                  </button>
-                </NavLink>              
-              ))
-            }
-          </div>
-          <div className="rooms private">
-  
-          </div>
+          }
+          {
+            anyPrivateRoom && 
+            <div className="rooms private flex-column">
+              <div className="rooms-header">
+                <p>PRIVATE ROOMS</p>
+              </div>
+              <div className="room-btn-desc room-list-desc flex">
+                <span className="room-header-desc flex">ID</span> 
+                <span className="room-header-desc flex">Name</span> 
+              </div>
+              {// each private room
+                this.state.privateRooms.map((room: any) => (
+                  <NavLink className="flex stretch link" key={room.roomId} to={`/room/${room.roomId}`}>
+                    <button className="room-btn flex" key={room.roomId}>
+                      <div className="room-btn-desc">
+                        <span className="room-btn-id">{room.roomId}</span>{room.roomName}
+                      </div>
+                      <div className="room-btn-players">
+                        0/{room.maxPlayers}
+                      </div>
+                    </button>
+                  </NavLink>              
+                ))
+              }
+            </div>
+          }          
         </div>
       );
     }

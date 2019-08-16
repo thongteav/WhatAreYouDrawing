@@ -7,6 +7,10 @@
   text-align: left;
 }
 
+.private {
+  padding-bottom: 2em;
+}
+
 .room-btn {
   background: #a2edff;
   color: white;
@@ -20,6 +24,14 @@
   flex-grow: 1;
 }
 
+.room-btn-id {
+  color: black;
+}
+
+.room-header-desc {
+  padding: 0.2em;
+}
+
 .stretch {
   align-items: stretch;
 }
@@ -27,6 +39,10 @@
 .room-btn:hover {
   background: #FFCAF2;
   box-shadow: #F186BF 0 -2px 0;
+}
+
+.room-list-desc {
+  background: #bbbbbb;
 }
 
 .room-btn-desc {

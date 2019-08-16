@@ -11,7 +11,6 @@ Modal.setAppElement('#root');
 interface IProp {
   closeForm: any
   isFormOpen: boolean
-  createRoom: any
 }
 
 interface IState {
@@ -19,7 +18,7 @@ interface IState {
   type: string,
   maxPlayers: number | number[],
   visible: boolean,
-  pin: number
+  pin: string
 }
 
 export default class RoomForm extends React.Component<IProp, IState> {
@@ -31,7 +30,7 @@ export default class RoomForm extends React.Component<IProp, IState> {
       type: 'public',
       maxPlayers: 1,
       visible: false,
-      pin: 0
+      pin: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,30 +40,62 @@ export default class RoomForm extends React.Component<IProp, IState> {
   }
 
   public handleSubmit(event: any) {
-    const newRoom = {
-      roomId: 5,
-      roomName: this.state.name,
-      maxPlayers: this.state.maxPlayers,
-      type: this.state.type,
-      totalPlayers: 1,
-      ownerId: 3,
-      players: [],
-      pin: this.state.pin
+    //https://drawguessapi.azurewebsites.net
+    //https://localhost:44314
+    let body;
+    if (this.state.type === 'private') {
+      body = {
+        roomName: this.state.name,
+        roomType: this.state.type,
+        maxPlayers: this.state.maxPlayers,
+        roomPin: this.state.pin
+      }
+    } else {
+      body = {
+        roomName: this.state.name,
+        roomType: this.state.type,
+        maxPlayers: this.state.maxPlayers
+      }
     }
+    
+    fetch("https://drawguessapi.azurewebsites.net/api/Rooms", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    }).then((result: any) => {
+      return result.json();
+    }).then((result: any) => {
+      console.log("Room created:");
+      console.log(result);
+    })
 
-    if (newRoom.roomName === '') {
-      newRoom.roomName = event.target.name.value;
-    }
+    // const newRoom = {
+    //   roomId: 5,
+    //   roomName: this.state.name,
+    //   maxPlayers: this.state.maxPlayers,
+    //   type: this.state.type,
+    //   totalPlayers: 1,
+    //   ownerId: 3,
+    //   players: [],
+    //   pin: this.state.pin
+    // }
 
-    //validate form inputs
+    // if (newRoom.roomName === '') {
+    //   newRoom.roomName = event.target.name.value;
+    // }
 
-    //add room to list
-    this.props.createRoom(newRoom);
+    // //validate form inputs
 
-    event.preventDefault();
-    console.log(newRoom);
+    // //add room to list
+    // this.props.createRoom(newRoom);
 
-    this.closeForm();
+    // event.preventDefault();
+    // console.log(newRoom);
+
+    // this.closeForm();
   }
 
   public handleNameChange(event: any) {
